@@ -19,7 +19,11 @@ I've never used Go and it seems interesting. My day job involves a lot of Micros
 
 # API Endpoints
 GET /user/{userId}/transactions?startDate=x&endDate=y
+
 POST /user/{userId}/transactions
   { t: [ { date: x, amount: y, title: z }, ... ] }
+  
 DELETE /user/{userId}/transactions/{tranGuid}
+
 PUT /user/{userId}/transactions/{tranGuid}
+  { date: x, amount: y, title: z }
