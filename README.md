@@ -31,19 +31,22 @@ PUT /user/{userId}/transactions/{tranGuid}
 # Notes
 The original mockup is not very easy to read. Here's a copy of the words from the whiteboard.
 
-General notes:
+## General notes:
 * User ID from google needs to be stored as a session and used as ID for info
   * Is the UserID unique per google session or always the same? If not the same, could possible use email address.
 * Generate a GUID as the transaction key
 
-The landing page will have a pretty graph (pie graph in the mockup) with a list of recent transactions below.
+## Landing Page
+* Pretty graph (pie graph in the mockup)
+* List of recent transactions below
 * Stretch goal: Click on a pie slice and filter the list below to the category
 
-The "add / edit single item" screen will contain all the fields available.
+## Add / Edit Single Item
+* Screen will contain all the fields available
 * Stretch goal: typeahead in the category box with categories that have been used before
 * Stretch goal: Allow user to add extra metadata to transactions
 
-CSV Import
+## CSV Import
 * Provide text box for CSV paste
 * Provide text box for column separator
 * Provide text box for row separator
