@@ -33,7 +33,7 @@ The original mockup is not very easy to read. Here's a copy of the words from th
 
 General notes:
 * User ID from google needs to be stored as a session and used as ID for info
-* * Is the UserID unique per google session or always the same? If not the same, could possible use email address.
+  * Is the UserID unique per google session or always the same? If not the same, could possible use email address.
 * Generate a GUID as the transaction key
 
 The landing page will have a pretty graph (pie graph in the mockup) with a list of recent transactions below.
@@ -49,4 +49,4 @@ CSV Import
 * Provide text box for row separator
 * When value in column or row separator box is changed, re-render the table displaying the imported values
 * Provide drop down boxes for the user to define what each column means. They can define date, amount, title and category
-* * What to do when user has more columns than there are fields to fill?
+  * What to do when user has more columns than there are fields to fill?
