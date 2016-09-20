@@ -16,3 +16,10 @@ Also, technologies I would like to incorporate in v1 are:
 
 # Why Go?
 I've never used Go and it seems interesting. My day job involves a lot of Microsoft technologies and I thought it would be fun to learn something different.
+
+# API Endpoints
+GET /user/{userId}/transactions?startDate=x&endDate=y
+POST /user/{userId}/transactions
+  { t: [ { date: x, amount: y, title: z }, ... ] }
+DELETE /user/{userId}/transactions/{tranGuid}
+PUT /user/{userId}/transactions/{tranGuid}
