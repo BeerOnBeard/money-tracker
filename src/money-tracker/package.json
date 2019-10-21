@@ -1,0 +1,19 @@
+{
+  "name": "money-tracker",
+  "version": "0.0.1",
+  "description": "Domain library for tracking money",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Adam Fournier",
+  "devDependencies": {
+    "@babel/preset-env": "^7.6.3",
+    "babel-jest": "^24.9.0",
+    "jest": "^24.9.0"
+  },
+  "dependencies": {
+    "uuid": "^3.3.3"
+  }
+}

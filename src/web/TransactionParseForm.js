@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Papa from 'papaparse';
-import TransactionBuilder from './transactions/TransactionBuilder';
+import { TransactionBuilder } from 'money-tracker';
 
 /*
  * Form that takes a string CSV of transactions, parses it, and

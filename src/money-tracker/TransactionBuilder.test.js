@@ -8,7 +8,14 @@ test('Parses CapOne correctly', () => {
   ]
 
   let parsedTransactions = TransactionBuilder.build(transactions);
-  let expectedTransactions = [ new Transaction(expect.anything(), 19.07, 'BEVERAGE WAREHOUSE', 'Merchandise') ];
+  let expectedTransactions = [
+    new Transaction({ 
+      id: expect.anything(),
+      date: '2017-12-12',
+      amount: 19.07,
+      description: 'BEVERAGE WAREHOUSE',
+      category: 'Merchandise'})
+  ];
 
   expect(parsedTransactions).toEqual(expectedTransactions);
 });

@@ -1,5 +1,6 @@
-import newUuid from 'uuid/v4';
-import Transaction from './Transaction';
+import newUuid from 'uuid';
+import Transaction from './Transaction.js';
+
 /*
  * Holds index maps to transform a table array into a colleciton of Transaction objects.
  */
@@ -42,11 +43,13 @@ class TransactionBuilder {
     let transactions = [];
     for (let i = 1; i < transactionTable.length; i++) {
       transactions.push(
-        new Transaction(
-          newUuid(),
-          parseFloat(transactionTable[i][mapper.amountIndex]),
-          transactionTable[i][mapper.descriptionIndex],
-          transactionTable[i][mapper.categoryIndex]));
+        new Transaction({
+          id: newUuid(),
+          date: transactionTable[i][mapper.dateIndex],
+          amount: parseFloat(transactionTable[i][mapper.amountIndex]),
+          description: transactionTable[i][mapper.descriptionIndex],
+          category: transactionTable[i][mapper.categoryIndex]
+        }));
     }
 
     return transactions;
