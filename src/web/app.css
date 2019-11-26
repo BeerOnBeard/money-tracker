@@ -1,0 +1,29 @@
+#root {
+  display: grid;
+  grid-template-columns: 12rem auto;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu__item {
+  padding: 1rem;
+  background-color: lightgray;
+  cursor: pointer;
+}
+
+.menu__item:hover {
+  background-color: gray;
+}
+
+.menu__item:active {
+  background-color: black;
+  color: white;
+}
+
+.menu__item--active {
+  background-color: gray;
+}

@@ -52,7 +52,7 @@ sqlite.open('./database.sqlite')
     console.log("Starting express...")
     app.listen(port);
   })
-  .then(() => console.log("Bootstrap complete. Listening..."))
+  .then(() => console.log(`Bootstrap complete. Listening on port ${port}...`))
   .catch(err => {
     console.error(err);
     process.exit(1);

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import isNullOrUndefined from './isNullOrUndefined';
 
 /*
  * Provide a table view of transactions.
@@ -18,8 +19,8 @@ class TransactionTable extends Component {
     for (let i = 0; i < this.props.data.length; i++) {
       let transaction = this.props.data[i];
       tableRows.push(
-        <tr>
-          <td>${transaction.amount.toFixed(2)}</td>
+        <tr key={transaction.id}>
+          <td>{isNullOrUndefined(transaction.amount) ? 'n/a' : '$' + transaction.amount.toFixed(2)}</td>
           <td>{transaction.description}</td>
           <td>{transaction.category}</td>
         </tr>
