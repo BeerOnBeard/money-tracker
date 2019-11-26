@@ -11,7 +11,7 @@ class TransactionTable extends Component {
   }
 
   render() {
-    if (this.props.data == undefined) {
+    if (this.props.data == undefined || this.props.data.length === 0) {
       return <div>No data</div>
     }
 
