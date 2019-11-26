@@ -12,3 +12,7 @@ The basic features I'm shooting for in v1 are:
 ## Development
 
 In the `src` directory, run `npm run dev`. The server and website will start up concurrently. The website is available at `http://localhost:8080`. Requests to the API are proxied to `http://localhost:3000` via the Webpack dev server in the web project.
+
+## Basics
+
+The package `money-tracker` contains the domain definition. The `web` project is a React app that communicates with the `server` project via HTTP. The system uses MySQL to make the system easy to run in a single docker image and make data backups easy.
