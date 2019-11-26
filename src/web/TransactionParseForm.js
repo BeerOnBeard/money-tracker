@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Papa from 'papaparse';
 import { TransactionBuilder } from 'money-tracker';
 import TransactionTable from './TransactionTable';
+import LoadingDistractor from './LoadingDistractor';
 
 /*
  * Form that takes a string CSV of transactions, parses it, and
@@ -11,28 +12,32 @@ class TransactionParseForm extends Component {
   constructor(props){
     super(props);
     this.csvText = React.createRef();
-    this.state = { transactions: undefined };
+    this.state = { transactions: undefined, isLoading: false };
   }
 
   handleChange(event) {
+    var self = this;
+    self.setState({ isLoading: true });
     event.preventDefault();
-    let self = this;
     Papa.parse(event.target.files[0], { complete: result => {
       let transactions = TransactionBuilder.build(result.data);
-      self.setState({ transactions });
+      self.setState({ transactions: transactions, isLoading: false });
     }});
   }
 
   upload(event) {
+    var self = this;
+    self.setState({ isLoading: true });
     event.preventDefault();
     fetch('http://localhost:8080/transactions/bulk', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ transactions: this.state.transactions })
+      body: JSON.stringify({ transactions: self.state.transactions })
     })
     .then(response => {
+      self.setState({ isLoading: false });
       if (!response.ok) {
         console.error(response);
         throw response;
@@ -41,14 +46,17 @@ class TransactionParseForm extends Component {
   }
 
   render() {
-    return <>
-      <input type="file" onChange={e => this.handleChange(e)} />
-      <button
-        disabled={this.state.transactions === undefined}
-        onClick={e => this.upload(e)}
-        >Upload</button>
-      <TransactionTable data={this.state.transactions} />
-    </>
+    return (
+      <>
+        <LoadingDistractor isActive={this.state.isLoading} />
+        <input type="file" onChange={e => this.handleChange(e)} />
+        <button
+          disabled={this.state.transactions === undefined}
+          onClick={e => this.upload(e)}
+          >Upload</button>
+        <TransactionTable data={this.state.transactions} />
+      </>
+    );
   }
 }
 

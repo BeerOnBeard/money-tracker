@@ -1,4 +1,10 @@
-#root {
+html, body {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.page {
   display: grid;
   grid-template-columns: 12rem auto;
 }
@@ -26,4 +32,27 @@
 
 .menu__item--active {
   background-color: gray;
+}
+
+.loadingDistractor {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  font-size: 3rem;
+  text-align: center;
+  padding-top: 10%;
+  background-color: #aaaaaa44;
+}
+.loadingDistractor > span {
+  animation: pulse 2s ease;
+  animation-iteration-count: infinite;
+}
+.loadingDistractor--active { display: block; }
+@keyframes pulse {
+  0% { transform: scale(0.1, 0.1); opacity: 0.0; }
+  50% { opacity: 1.0; }
+  100% { transform: scale(1.2, 1.2); opacity: 0.0; }
 }
