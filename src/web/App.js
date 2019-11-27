@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TransactionParseForm from './TransactionParseForm';
 import TransactionPage from './TransactionsPage';
+import './app.css';
 
 const pages = { transactions: 'Transactions', import: 'Import' };
 

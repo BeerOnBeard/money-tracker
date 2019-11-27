@@ -1,5 +1,4 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './index.js',
@@ -8,17 +7,15 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.js$/, use: 'babel-loader' }
+      { test: /\.js$/, use: 'babel-loader' },
+      { test: /\.css$/, use: [ 'style-loader', 'css-loader' ] }
     ]
   },
   plugins: [
     new HtmlWebPackPlugin({
       template: './index.html',
       filename: 'index.html'
-    }),
-    new CopyWebpackPlugin([
-      { from: 'app.css', to: 'dist/app.css' }
-    ])
+    })
   ],
   devServer: {
     proxy: {

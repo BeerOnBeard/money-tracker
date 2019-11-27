@@ -16,3 +16,7 @@ In the `src` directory, run `npm run dev`. The server and website will start up 
 ## Basics
 
 The package `money-tracker` contains the domain definition. The `web` project is a React app that communicates with the `server` project via HTTP. The system uses MySQL to make the system easy to run in a single docker image and make data backups easy.
+
+## Warning
+
+The API does not have a restriction on the number of results returned. This is a design choice, but can cause some serious performance issues if this was used in a larger system.

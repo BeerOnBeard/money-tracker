@@ -13,8 +13,21 @@ app.use(express.json());
  * Get a collection of transactions.
  */
 app.get('/transactions', async (req, res) => {
-  // TODO: start and end query string variables for date restriction with defaults to the last month
-  let result = await sqlite.all('SELECT id, date, amount, description, category FROM transactions');
+  let startDate = req.query.startDate;
+  if (startDate === undefined) {
+    startDate = new Date();
+    startDate.setMonth(startDate.getMonth() - 1);
+  }
+
+  let endDate = req.query.endDate;
+  if (endDate === undefined) {
+    endDate = new Date();
+  }
+  
+  let result = await sqlite.all(
+    'SELECT id, date, amount, description, category FROM transactions WHERE date > ? AND date < ?',
+    [ startDate, endDate ]);
+
   let transactions = result.map(x => new Transaction(x));
   res.send(transactions);
 });
