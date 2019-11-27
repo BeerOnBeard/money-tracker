@@ -4,9 +4,9 @@ html, body {
   border: 0;
 }
 
-.page {
+#root {
   display: grid;
-  grid-template-columns: 12rem auto;
+  grid-template-columns: 12rem minmax(20rem, 1fr);
 }
 
 .menu {

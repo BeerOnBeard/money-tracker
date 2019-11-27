@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import LoadingDistractor from './LoadingDistractor';
 import TransactionTable from './TransactionTable';
+import TransactionsPieChart from './TransactionsPieChart';
 
 class TransactionsPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { transactions: undefined, isLoading: false, isFailed: false }
+    this.state = { transactions: undefined, categoryFilter: undefined, isLoading: false, isFailed: false };
+    this.onPieChartClick = (categorySelected => this.setState({ categoryFilter: categorySelected })).bind(this);
   }
 
   getTransactions() {
@@ -41,7 +43,8 @@ class TransactionsPage extends Component {
     return (
       <>
         <LoadingDistractor isActive={this.state.isLoading} />
-        <TransactionTable data={this.state.transactions} />
+        <TransactionsPieChart data={this.state.transactions} onClick={this.onPieChartClick} />
+        <TransactionTable data={this.state.transactions} categoryFilter={this.state.categoryFilter} />
       </>
     )
   }

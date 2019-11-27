@@ -36,14 +36,12 @@ class App extends Component {
   render() {
     return (
       <>
-        <div className="page">
-          <ul className="menu">
-            { this.getMenuItemFor(pages.transactions) }
-            { this.getMenuItemFor(pages.import) }
-          </ul>
-          <div className="main">
-            { this.getPage() }
-          </div>
+        <ul className="menu">
+          { this.getMenuItemFor(pages.transactions) }
+          { this.getMenuItemFor(pages.import) }
+        </ul>
+        <div className="main">
+          { this.getPage() }
         </div>
       </>
     );
