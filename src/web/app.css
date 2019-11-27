@@ -1,3 +1,12 @@
+:root {
+  --menu-item-background: rgba(200,200,200 ,1 );
+  --menu-item-background-hover: rgba(125,125,125 ,1);
+  --menu-item-background-click: rgba(100,100,100 ,1);
+  --menu-item-text-click: rgba(225,225,225 ,1);
+  --menu-item-background-active: rgba(150,150,150 ,1);
+  --loading-distractor-background: rgba(105,105,105 ,0.5);
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -17,21 +26,21 @@ html, body {
 
 .menu__item {
   padding: 1rem;
-  background-color: lightgray;
+  background-color: var(--menu-item-background-color);
   cursor: pointer;
 }
 
 .menu__item:hover {
-  background-color: gray;
+  background-color: var(--menu-item-background-hover);
 }
 
 .menu__item:active {
-  background-color: black;
-  color: white;
+  background-color: var(--menu-item-background-click);
+  color: var(--menu-item-text-click);
 }
 
 .menu__item--active {
-  background-color: gray;
+  background-color: var(--menu-item-background-active);
 }
 
 .loadingDistractor {
@@ -44,7 +53,7 @@ html, body {
   font-size: 3rem;
   text-align: center;
   padding-top: 10%;
-  background-color: #aaaaaa44;
+  background-color: var(--loading-distractor-background);
 }
 .loadingDistractor > span {
   animation: pulse 2s ease;
