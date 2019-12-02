@@ -11,7 +11,7 @@ class TransactionsPage extends Component {
 
     let startDate = new Date(),
         endDate = new Date();
-    startDate.setMonth(startDate.getMonth() - 100);
+    startDate.setMonth(startDate.getMonth() - 100); // TODO: Set to a normal default like 1 month. This is for testing only.
 
     this.state = {
       transactions: undefined,

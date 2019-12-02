@@ -40,7 +40,7 @@ class TransactionParseForm extends Component {
       self.setState({ isLoading: false });
       if (!response.ok) {
         console.error(response);
-        throw response;
+        throw response; // TODO: Need to handle this.
       }
     })
   }

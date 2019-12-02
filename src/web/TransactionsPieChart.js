@@ -79,5 +79,4 @@ function TransactionsPieChart({ data, onClick }) {
   return <canvas ref={pieChartCanvas}></canvas>
 }
 
-
 export default TransactionsPieChart;
