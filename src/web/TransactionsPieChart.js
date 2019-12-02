@@ -19,39 +19,46 @@ function pivotData(data) {
       ? dictionary[category] + amount
       : amount;
   }
-  return dictionary;
-}
 
-function getRandomRGBA() {
-  const min = 0,
-        max = 255,
-        opacity = 0.8;
-  
-  const getRandomRGBValue = () => Math.floor(Math.random() * (max - min + 1)) + min;;
-  return `rgba(${getRandomRGBValue()}, ${getRandomRGBValue()}, ${getRandomRGBValue()}, ${opacity})`;
-}
-
-function TransactionsPieChart({ data, onClick }) {
-  if (isNullOrUndefined(data) || data.length === 0) {
-    return <></>;
-  }
-  
-  const pieChartCanvas = useRef(null);
-  let pivotedData = pivotData(data);
   let chartData = {
     labels: [],
     counts: [],
     backgroundColors: []
   };
 
-  for (const key in pivotedData) {
+  for (const key in dictionary) {
     chartData.labels.push(key);
-    chartData.counts.push(pivotedData[key]);
-    chartData.backgroundColors.push(getRandomRGBA());
+    chartData.counts.push(dictionary[key]);
+    chartData.backgroundColors.push(getRGBAFor(key));
+  }
+
+  return chartData;
+}
+
+function getRGBAFor(label) {
+  const max = 255,
+        opacity = 0.8;
+  
+  const hash = Array.from(label).reduce((accumulator, value) => accumulator + value.charCodeAt(0), 0);
+
+  const red = (hash*3000) % max;
+  const green = (hash*5000) % max;
+  const blue = (hash*8000) % max;
+
+  return `rgba(${red}, ${green}, ${blue}, ${opacity})`;
+}
+
+function TransactionsPieChart({ data, onClick }) {
+  if (isNullOrUndefined(data) || data.length === 0) {
+    return <></>;
   }
 
   const chart = useRef();
+  const pieChartCanvas = useRef(null);
+
+  // used to create the initial chart and destroy it when component is unmounted
   useEffect(() => {
+    const chartData = pivotData(data);
     chart.current = new Chart(pieChartCanvas.current, {
       type: 'pie',
       data: {
@@ -62,7 +69,7 @@ function TransactionsPieChart({ data, onClick }) {
         }]
       },
       options: {
-        onClick: (_, activeElements) => { 
+        onClick: (_, activeElements) => {
           if (activeElements.length < 1) {
             onClick(undefined);
             return;
@@ -71,10 +78,30 @@ function TransactionsPieChart({ data, onClick }) {
           onClick(activeElements[0]._model.label)
         }
       }});
+
     return () => {
       chart.current.destroy();
+      chart.current = undefined;
     }
-  }, []); // empty array means useEffect will only fire after initial render
+  }, []);
+
+  // used to update the chart when the chart data changes
+  useEffect(() => {
+    if (chart.current === undefined) {
+      return;
+    }
+
+    const chartData = pivotData(data);
+    chart.current.data = {
+      labels: chartData.labels,
+      datasets: [{
+        data: chartData.counts,
+        backgroundColor: chartData.backgroundColors
+      }]
+    };
+
+    chart.current.update(0);
+  });
 
   return <canvas ref={pieChartCanvas}></canvas>
 }

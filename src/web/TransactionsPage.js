@@ -25,6 +25,12 @@ class TransactionsPage extends Component {
     this.onPieChartClick = (categorySelected => this.setState({ categoryFilter: categorySelected })).bind(this);
     this.onStartDateChanged = (date => this.setState({ startDate: date})).bind(this);
     this.onEndDateChanged = (date => this.setState({ endDate: date})).bind(this);
+    this.onTransactionUpdated = (updatedTransaction => {
+      let transactions = [...this.state.transactions];
+      let index = transactions.findIndex(tran => tran.id === updatedTransaction.id);
+      transactions.splice(index, 1, updatedTransaction);
+      this.setState({ transactions });
+    });
   }
 
   pad(number) {
@@ -75,7 +81,10 @@ class TransactionsPage extends Component {
         <div>End: <DatePicker selected={this.state.endDate} onChange={this.onEndDateChanged} /></div>
         
         <TransactionsPieChart data={this.state.transactions} onClick={this.onPieChartClick} />
-        <TransactionTable data={this.state.transactions} categoryFilter={this.state.categoryFilter} />
+        <TransactionTable
+          data={this.state.transactions}
+          categoryFilter={this.state.categoryFilter}
+          onTransactionUpdated={this.onTransactionUpdated} />
       </>
     )
   }

@@ -16,7 +16,7 @@ class TransactionParseForm extends Component {
   }
 
   handleChange(event) {
-    var self = this;
+    let self = this;
     self.setState({ isLoading: true });
     event.preventDefault();
     Papa.parse(event.target.files[0], { complete: result => {
@@ -25,8 +25,15 @@ class TransactionParseForm extends Component {
     }});
   }
 
+  onTransactionUpdated(updatedTransaction) {
+    let transactions = [...this.state.transactions];
+    let index = transactions.findIndex(tran => tran.id === updatedTransaction.id);
+    transactions.splice(index, 1, updatedTransaction);
+    this.setState({ transactions });
+  }
+
   upload(event) {
-    var self = this;
+    let self = this;
     self.setState({ isLoading: true });
     event.preventDefault();
     fetch('http://localhost:8080/transactions/bulk', {
@@ -54,7 +61,7 @@ class TransactionParseForm extends Component {
           disabled={this.state.transactions === undefined}
           onClick={e => this.upload(e)}
           >Upload</button>
-        <TransactionTable data={this.state.transactions} />
+        <TransactionTable data={this.state.transactions} onTransactionUpdated={tran => this.onTransactionUpdated(tran)} />
       </>
     );
   }
