@@ -63,6 +63,7 @@ html, body {
 /* Loading Distractor */
 .loading-distractor {
   display: none;
+  z-index: 999;
   position: absolute;
   top: 0;
   left: 0;
