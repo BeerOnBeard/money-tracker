@@ -20,3 +20,9 @@ The package `money-tracker` contains the domain definition. The `web` project is
 ## Warning
 
 The API does not have a restriction on the number of results returned. This is a design choice, but can cause some serious performance issues if this was used in a larger system.
+
+## Notes
+
+### Warning: The final argument passed to useEffect changed size between renders. The order and size of this array must remain constant.
+
+This is a warning that React throws up when a user deletes a transaction. It is due to the way `useEffect` is being used. In order to only fire `useEffect` when a transaction changes, I chose to use the spread operator to force the `useEffect` function to watch each individual transaction instead of the transactions collection, aka "data" in the `TransactionPieChart`. Until I find a reasonable workaround, I'm going to take the hit of React throwing a warning into the console when in development mode.

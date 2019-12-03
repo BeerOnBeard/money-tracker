@@ -33,6 +33,13 @@ class TransactionParseForm extends Component {
     this.setState({ transactions });
   }
 
+  onTransactionDeleted(deletedTransaction) {
+    let transactions = [...this.state.transactions];
+    let index = transactions.findIndex(tran => tran.id === deletedTransaction.id);
+    transactions.splice(index, 1);
+    this.setState({ transactions });
+  }
+
   upload(event) {
     event.preventDefault();
     
@@ -52,7 +59,10 @@ class TransactionParseForm extends Component {
           disabled={this.state.transactions === undefined}
           onClick={e => this.upload(e)}
           >Upload</button>
-        <TransactionTable data={this.state.transactions} onTransactionUpdated={tran => this.onTransactionUpdated(tran)} />
+        <TransactionTable
+          data={this.state.transactions}
+          onTransactionUpdated={tran => this.onTransactionUpdated(tran)}
+          onTransactionDeleted={tran => this.onTransactionDeleted(tran)} />
       </>
     );
   }

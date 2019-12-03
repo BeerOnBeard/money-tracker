@@ -76,7 +76,7 @@ app.put('/transactions/:id', async (req, res) => {
        WHERE id = ?`,
       [ req.body.date, req.body.amount, req.body.description, req.body.category, req.params.id ]);  
   } catch(e) {
-    console.error('Error updating a transaction.')
+    console.error('Error updating a transaction.');
     console.error(e);
     res.status(500).end();
     return;
@@ -84,6 +84,22 @@ app.put('/transactions/:id', async (req, res) => {
   
   res.status(200).end();
 });
+
+app.delete('/transactions/:id', async (req, res) => {
+  try {
+    await sqlite.run(
+      `DELETE FROM transactions
+       WHERE id = ?`,
+       [ req.params.id ]);
+  } catch(e) {
+    console.error('Error deleting a transaction.');
+    console.error(e);
+    res.status(500).end();
+    return;
+  }
+
+  res.status(200).end();
+})
 
 sqlite.open('./database.sqlite')
   .then(db => {

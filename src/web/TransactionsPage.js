@@ -4,7 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import LoadingDistractor from './LoadingDistractor';
 import TransactionTable from './TransactionTable';
 import TransactionsPieChart from './TransactionsPieChart';
-import { getTransactions, updateTransaction } from './TransactionDataAccess';
+import { getTransactions, updateTransaction, deleteTransaction } from './TransactionDataAccess';
 
 class TransactionsPage extends Component {
   constructor(props) {
@@ -36,6 +36,19 @@ class TransactionsPage extends Component {
           let transactions = [...self.state.transactions];
           let index = transactions.findIndex(tran => tran.id === updatedTransaction.id);
           transactions.splice(index, 1, updatedTransaction);
+          self.setState({ transactions });
+        })
+        .catch(() => self.setState({ isFailed: true }))
+        .finally(() => self.setState({ isLoading: false }));
+    });
+    this.onTransactionDeleted = (deletedTransaction => {
+      let self = this;
+      self.setState({ isLoading: true });
+      deleteTransaction(deletedTransaction)
+        .then(() => {
+          let transactions = [...self.state.transactions];
+          let index = transactions.findIndex(tran => tran.id === deletedTransaction.id);
+          transactions.splice(index, 1);
           self.setState({ transactions });
         })
         .catch(() => self.setState({ isFailed: true }))
@@ -76,7 +89,8 @@ class TransactionsPage extends Component {
         <TransactionTable
           data={this.state.transactions}
           categoryFilter={this.state.categoryFilter}
-          onTransactionUpdated={this.onTransactionUpdated} />
+          onTransactionUpdated={this.onTransactionUpdated}
+          onTransactionDeleted={this.onTransactionDeleted} />
       </>
     )
   }

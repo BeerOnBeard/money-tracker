@@ -23,16 +23,22 @@ function completeEditing(transaction, amountRef, descriptionRef, categoryRef, se
   setEditing(undefined);
 }
 
+function deleteTran(transaction, setEditing, onTransactionDeleted) {
+  onTransactionDeleted(transaction);
+  setEditing(undefined);
+}
+
 /*
  * Provide a table view of transactions.
  * data: a collection of transactions including
  */
-function TransactionTable({ data, categoryFilter, onTransactionUpdated }) {
+function TransactionTable({ data, categoryFilter, onTransactionUpdated, onTransactionDeleted }) {
   if (data == undefined || data.length === 0) {
     return <div>No data</div>
   }
 
   onTransactionUpdated = onTransactionUpdated === undefined ? ()=>{} : onTransactionUpdated;
+  onTransactionDeleted = onTransactionDeleted === undefined ? ()=>{} : onTransactionDeleted;
 
   const [editing, setEditing] = useState(undefined);
   let amountRef = useRef(undefined);
@@ -53,7 +59,10 @@ function TransactionTable({ data, categoryFilter, onTransactionUpdated }) {
           <input type="number" ref={amountRef} defaultValue={transaction.amount} />
           <input type="text" ref={descriptionRef} defaultValue={transaction.description} />
           <input type="text" ref={categoryRef} defaultValue={transaction.category} />
-          <button onClick={e => completeEditing(transaction, amountRef, descriptionRef, categoryRef, setEditing, onTransactionUpdated)}>Done</button>
+          <div>
+            <button onClick={_ => completeEditing(transaction, amountRef, descriptionRef, categoryRef, setEditing, onTransactionUpdated)}>Done</button>
+            <button onClick={_ => deleteTran(transaction, setEditing, onTransactionDeleted)}>Delete</button>
+          </div>
         </div>
       );
       continue;

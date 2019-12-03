@@ -57,4 +57,15 @@ function updateTransaction(transaction) {
   });
 }
 
-export { getTransactions, bulkUploadTransactions, updateTransaction };
+function deleteTransaction(transaction) {
+  return fetch(`${baseUri}/transactions/${transaction.id}`, { method: 'DELETE' })
+        .then(response => {
+          if (!response.ok) {
+            console.error('Deleting the transaction failed.');
+            console.error(response);
+            throw response;
+          }
+        });
+}
+
+export { getTransactions, bulkUploadTransactions, updateTransaction, deleteTransaction };
