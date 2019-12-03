@@ -34,7 +34,7 @@ app.get('/transactions', async (req, res) => {
 
 /*
  * Bulk load transactions into persistent store.
-  { transactions: [ { Transaction } ] }
+ * { transactions: [ { Transaction } ] }
  */
 app.post('/transactions/bulk', async (req, res) => {
   if (req.body.transactions === undefined) {
@@ -51,9 +51,38 @@ app.post('/transactions/bulk', async (req, res) => {
     .all(queryPromises)
     .then(() => res.status(200).end())
     .catch(error => {
-      console.log(error);
+      console.error(error);
       res.status(500).end();
     });
+});
+
+/*
+ * Update a specific transaction.
+ * { Transaction }
+ */
+app.put('/transactions/:id', async (req, res) => {
+  if (req.body === undefined) {
+    res.status(400).end();
+    return;
+  }
+
+  try {
+    await sqlite.run(
+      `UPDATE transactions
+       SET date = ?,
+           amount = ?,
+           description = ?,
+           category = ?
+       WHERE id = ?`,
+      [ req.body.date, req.body.amount, req.body.description, req.body.category, req.params.id ]);  
+  } catch(e) {
+    console.error('Error updating a transaction.')
+    console.error(e);
+    res.status(500).end();
+    return;
+  }
+  
+  res.status(200).end();
 });
 
 sqlite.open('./database.sqlite')

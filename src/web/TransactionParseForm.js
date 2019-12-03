@@ -3,6 +3,7 @@ import Papa from 'papaparse';
 import { TransactionBuilder } from 'money-tracker';
 import TransactionTable from './TransactionTable';
 import LoadingDistractor from './LoadingDistractor';
+import { bulkUploadTransactions } from './TransactionDataAccess';
 
 /*
  * Form that takes a string CSV of transactions, parses it, and
@@ -33,23 +34,13 @@ class TransactionParseForm extends Component {
   }
 
   upload(event) {
+    event.preventDefault();
+    
     let self = this;
     self.setState({ isLoading: true });
-    event.preventDefault();
-    fetch('http://localhost:8080/transactions/bulk', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ transactions: self.state.transactions })
-    })
-    .then(response => {
-      self.setState({ isLoading: false });
-      if (!response.ok) {
-        console.error(response);
-        throw response; // TODO: Need to handle this.
-      }
-    })
+    bulkUploadTransactions(self.state.transactions)
+      // TODO: handle failure
+      .finally(() => self.setState({ isLoading: false }));
   }
 
   render() {

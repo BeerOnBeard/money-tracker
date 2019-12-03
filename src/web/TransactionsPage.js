@@ -4,6 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import LoadingDistractor from './LoadingDistractor';
 import TransactionTable from './TransactionTable';
 import TransactionsPieChart from './TransactionsPieChart';
+import { getTransactions, updateTransaction } from './TransactionDataAccess';
 
 class TransactionsPage extends Component {
   constructor(props) {
@@ -11,7 +12,9 @@ class TransactionsPage extends Component {
 
     let startDate = new Date(),
         endDate = new Date();
-    startDate.setMonth(startDate.getMonth() - 100); // TODO: Set to a normal default like 1 month. This is for testing only.
+    
+    // TODO: Set to a normal default like 1 month. This is for testing only.
+    startDate.setMonth(startDate.getMonth() - 100);
 
     this.state = {
       transactions: undefined,
@@ -26,47 +29,36 @@ class TransactionsPage extends Component {
     this.onStartDateChanged = (date => this.setState({ startDate: date})).bind(this);
     this.onEndDateChanged = (date => this.setState({ endDate: date})).bind(this);
     this.onTransactionUpdated = (updatedTransaction => {
-      let transactions = [...this.state.transactions];
-      let index = transactions.findIndex(tran => tran.id === updatedTransaction.id);
-      transactions.splice(index, 1, updatedTransaction);
-      this.setState({ transactions });
+      let self = this;
+      self.setState({ isLoading: true });
+      updateTransaction(updatedTransaction)
+        .then(() => {
+          let transactions = [...self.state.transactions];
+          let index = transactions.findIndex(tran => tran.id === updatedTransaction.id);
+          transactions.splice(index, 1, updatedTransaction);
+          self.setState({ transactions });
+        })
+        .catch(() => self.setState({ isFailed: true }))
+        .finally(() => self.setState({ isLoading: false }));
     });
   }
 
-  pad(number) {
-    return number < 10 ? '0' + number : number;
-  }
-
-  getDateQueryString(date) {
-    return `${date.getUTCFullYear()}-${this.pad(date.getUTCMonth() + 1)}-${this.pad(date.getUTCDate())}`;
-  }
-
-  getTransactions() {
+  fetchTransactions() {
     let self = this;
     self.setState({ isLoading: true });
-    let startDateQueryString = this.getDateQueryString(self.state.startDate);
-    let endDateQueryString = this.getDateQueryString(self.state.endDate);
 
-    // TODO: remove hard-coded URI
-    return fetch(`http://localhost:8080/transactions?startDate=${startDateQueryString}&endDate=${endDateQueryString}`)
-      .then(response => {
-        if (!response.ok) {
-          throw response;
-        } else {
-          return response.json();
-        }
-      })
+    getTransactions(self.state.startDate, self.state.endDate)
       .then(transactions => self.setState({ transactions }))
       .catch(response => {
         self.setState({ isFailed: true });
-        console.error(`Failed to get transactions: ${response.status}`); // TODO: remove console call
+        console.error(`Failed to get transactions`);
         console.error(response);
       })
       .finally(() => self.setState({ isLoading: false }));
   }
 
   componentDidMount() {
-    this.getTransactions();
+    this.fetchTransactions();
   }
 
   render() {
