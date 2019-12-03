@@ -56,7 +56,7 @@ function TransactionsPieChart({ data, onClick }) {
   const chart = useRef();
   const pieChartCanvas = useRef(null);
 
-  // used to create the initial chart and destroy it when component is unmounted
+  // Create the initial chart and destroy it when component is unmounted
   useEffect(() => {
     const chartData = pivotData(data);
     chart.current = new Chart(pieChartCanvas.current, {
@@ -85,7 +85,7 @@ function TransactionsPieChart({ data, onClick }) {
     }
   }, []);
 
-  // used to update the chart when the chart data changes
+  // Update the chart when any of the objects within the data array change
   useEffect(() => {
     if (chart.current === undefined) {
       return;
@@ -100,8 +100,8 @@ function TransactionsPieChart({ data, onClick }) {
       }]
     };
 
-    chart.current.update(0);
-  });
+    chart.current.update();
+  }, [...data]);
 
   return <canvas ref={pieChartCanvas}></canvas>
 }
