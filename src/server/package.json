@@ -10,7 +10,7 @@
   },
   "author": "Adam Fournier",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "money-tracker": "file:../money-tracker",
     "sqlite": "^3.0.3"
   }
